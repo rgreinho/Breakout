@@ -1,5 +1,7 @@
 import QtQuick 2.0
 
+import "js/utils.js" as Utils
+
 Rectangle {
     id: root
     width: 640
@@ -45,7 +47,7 @@ Rectangle {
         y: root.height - 40
     }
 
-    /*
+
     // Create the ball
     Ball {
         id: ball
@@ -59,67 +61,30 @@ Rectangle {
         // Define the original position
         x: (root.width - ball.width) / 2
         y: root.height - ball.height - 40
-    }
-    */
-
-    // Make a ball to bounce
-    Rectangle {
-        id: ball
-
-        width: 20
-        height: width
-        radius: width / 2
-        x: (root.width - ball.width) / 2
-        y: root.height - ball.height - 40
-        z: 1
-        color: "Yellow"
-
-        property bool animate: false
-
-        // Move the ball to the right and back to the left repeatedly
-        SequentialAnimation on x {
-            loops: Animation.Infinite
-            running: ball.animate
-            NumberAnimation {
-                to: root.width - ball.width
-                duration: 2000
-            }
-            NumberAnimation {
-                to: 0
-                duration: 2000
-            }
-        }
-
-        // Set the velocity on Y
-        Behavior on y {
-            SpringAnimation{
-                velocity: 50
-            }
-        }
-
-        //Component.onCompleted: y = root.height-10; // start the ball motion
 
         // Detect the ball hitting the top or bottom of the view and bounce it
         onYChanged: {
-            if (detectColision(ball, bar)) {
-            //if (ball.y >= root.height - ball.height){
+            if (Utils.detectColision(ball, bar)) {
+                // Send the ball to the top of the screen
                 console.log("colision")
                 ball.y = 0;
             } else if (ball.y <= 0) {
+                // Send the ball to the bottom of the screen
                 ball.y = root.height - ball.height;
+            } else  if (ball.y >= root.height - ball.height){
+                // If you go to far you loose
+                ball.animate = false
+                lost.visible = true
             }
-            /*
-            else {
-                ball.y = -1
-            }
-            */
         }
     }
 
-    function detectColision(rectangleA, rectangleB){
-        return rectangleA.x < (rectangleB.x + rectangleB.width)
-                && (rectangleA.x + rectangleA.width) > rectangleB.x
-                && rectangleA.y < (rectangleB.y + rectangleB.height)
-                && (rectangleA.y + rectangleA.height) > rectangleB.y
+    Text{
+        id: lost
+        anchors.centerIn: root
+        text: "You lost!"
+        font.pointSize: 48
+        color: "red"
+        visible: false
     }
 }
