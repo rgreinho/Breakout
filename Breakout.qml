@@ -5,19 +5,26 @@ import "js/utils.js" as Utils
 Rectangle {
     id: root
     width: 640
-    height: 360
+    height: 480
     focus: true
+
+    property bool hasStarted : false
 
     // Key actions
     Keys.onLeftPressed: bar.move(-10)
     Keys.onRightPressed: bar.move(10)
     Keys.onSpacePressed: {
-        // Start the ball animation
-        ball.animate = true
+        if (!hasStarted){
+            // Start the ball animation
+            ball.animate = true
 
-        // And make it move towards the top
-        ball.y = 0
-        console.log("start")
+            // And make it move towards the top
+            ball.y = 0
+
+            // Set the flag indicating that the game has started
+            hasStarted = true
+            console.log("start")
+        }
     }
 
     // Create the bricks
@@ -65,14 +72,14 @@ Rectangle {
         // Detect the ball hitting the top or bottom of the view and bounce it
         onYChanged: {
             if (Utils.detectColision(ball, bar)) {
-                // Send the ball to the top of the screen
+                // Send the ball to the top of the screen if it hits the bar
                 console.log("colision")
                 ball.y = 0;
             } else if (ball.y <= 0) {
-                // Send the ball to the bottom of the screen
+                // Send the ball to the bottom of the screen if it hits the top of the screen
                 ball.y = root.height - ball.height;
             } else  if (ball.y >= root.height - ball.height){
-                // If you go to far you loose
+                // If you go to far down you lose
                 ball.animate = false
                 lost.visible = true
             }

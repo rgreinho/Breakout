@@ -17,7 +17,7 @@ Rectangle {
     // Holds the flag animating the ball
     property bool animate: false
 
-    // Move the ball to the right and back to the left repeatedly
+    // The ball will move infinitely
     SequentialAnimation on x {
         id: ballAnimation
         loops: Animation.Infinite
@@ -33,21 +33,10 @@ Rectangle {
         }
     }
 
-    // Make y move with a velocity of 200
+    // Set the velocity on Y to 200
     Behavior on y {
         SpringAnimation{
-            velocity: 100;
+            velocity: 200;
         }
     }
-
-    /*
-    // Detect the ball hitting the top or bottom of the view and bounce it
-    onYChanged: {
-        if (y <= 0) {
-            y = bottomBoundary - ball.height;
-        } else if (y >= bottomBoundary - ball.height) {
-            y = 0;
-        }
-    }
-    */
 }
