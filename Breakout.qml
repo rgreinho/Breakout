@@ -11,8 +11,9 @@ Rectangle {
     property bool hasStarted : false
 
     // Key actions
-    Keys.onLeftPressed: bar.move(-10)
-    Keys.onRightPressed: bar.move(10)
+    Keys.onLeftPressed: bar.move(-20)
+    Keys.onRightPressed: bar.move(20)
+    Keys.onEscapePressed: Qt.quit();
     Keys.onSpacePressed: {
         if (!hasStarted){
             // Start the ball animation
